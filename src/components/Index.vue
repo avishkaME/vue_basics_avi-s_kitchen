@@ -2,6 +2,7 @@
   <div class="index container">
     <div class="card" v-for="menu in menues" :key="menu.id">
       <div class="card-content">
+        <i class="material-icons delete" @click="deleteMenu(menu.id)">delete</i>
         <h2 class="indigo-text"> {{ menu.title}}</h2>
         <ul class="ingredients">
           <li v-for="(ing, index) in menu.ingredients" :key="index">
@@ -14,15 +15,33 @@
 </template>
 
 <script>
+import db from '@/firebase/init'
 export default {
   name: 'Index',
   data () {
     return {
-      menues: [
-        {title: 'avi brew', slug: 'avi-brew', ingredients: ['bananas','coffe','waffels'], id: '1'},
-        {title: 'morning mood', slug: 'morning-mood', ingredients: ['Papaya','milk','toasted bread'], id: '2'},
-      ]
+      menues: []
     }
+
+  },
+  methods: {
+    deleteMenu(id){
+      this.menues = this.menues.filter(menu => {
+        return menu.id != id
+      })
+    }
+  },
+  created(){
+    //fetch data from the firestore
+    db.collection('menues').get()
+    .then(snapshot => {
+      snapshot.forEach(doc => {
+        let menu = doc.data()
+        menu.id = doc.id
+        this.menues.push(menu)
+        // console.log(doc.data(), doc.id)
+      });
+    })
   }
 }
 </script>
@@ -49,5 +68,14 @@ export default {
 
   .index .ingredients li{
     display: inline-block;
+  }
+
+  .index .delete{
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    cursor: pointer;
+    color: #aaa;
+    font-size: 1.4em;
   }
 </style>
