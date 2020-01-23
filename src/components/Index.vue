@@ -26,9 +26,14 @@ export default {
   },
   methods: {
     deleteMenu(id){
-      this.menues = this.menues.filter(menu => {
+      //delete   doc from firestore
+      db.collection('menues').doc(id).delete()
+      .then(() => {
+        this.menues = this.menues.filter(menu => {
         return menu.id != id
+        })
       })
+      
     }
   },
   created(){
