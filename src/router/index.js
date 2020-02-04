@@ -16,7 +16,7 @@ export default new Router({
       path: '/add-menu',
       name: 'AddMenu',
       component: AddMenu
-    },   
+    },  
        
 
   ]
