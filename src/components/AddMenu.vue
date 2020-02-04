@@ -6,7 +6,7 @@
                 <label for="title">Menu title:</label>
                 <input type="text" name="title" id="" v-model="title">
             </div>
-            <div v-for="(ing, index) in ingredients" :key="index">
+            <div v-for="(ing, index) in ingredients" :key="index" class="field">
                 <label for="ingredient">Ingredient:</label>
                 <input type="text" name="ingredient" id="" v-model="ingredients[index]">
                 <i class="material-icons delete" @click="deleteIng(ing)">delete</i>
