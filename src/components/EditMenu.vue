@@ -25,6 +25,8 @@
 
 <script>
 import db from '@/firebase/init'
+import slugify from 'slugify'
+
 export default {
     name: 'EditMenu',
     data(){
@@ -37,20 +39,20 @@ export default {
     methods: {
         EditMenu(){
             // console.log(this.menu.title)
-            if(this.title){
+            if(this.menu.title){
                 this.feedback = null
                 //create a slug
-                this.slug = slugify(this.title, {
+                this.menu.slug = slugify(this.menu.title, {
                     replacement: '-',
                     remove: /[$*_+~.()'"!\-:@]/g,
                     lower: true
                 })
                 
                 // console.log(this.slug)
-                db.collection('menues').add({
-                    title: this.title,
-                    ingredients: this.ingredients,
-                    slug: this.slug
+                db.collection('menues').doc(this.menu.id).update({
+                    title: this.menu.title,
+                    ingredients: this.menu.ingredients,
+                    slug: this.menu.slug
                 }).then(() => {
                     this.$router.push({ name: 'Index'}).catch(err => {
                         console.log(err)
